@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaline Wangui Mugo | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
+    <style>
+        /* ─── DESIGN TOKENS ─────────────────────────────── */
+        :root {
+            --ink:       #0c0b14;
+            --ink-mid:   #1a1728;
+            --ink-soft:  #2a2540;
+            --glass:     rgba(255,255,255,0.035);
+            --glass-b:   rgba(255,255,255,0.07);
+            --border:    rgba(180,140,255,0.18);
+            --border-hi: rgba(180,140,255,0.42);
+            --purple:    #b57bff;
+            --purple-d:  #8b45f5;
+            --rose:      #f472b6;
+            --white:     #f5f2ff;
+            --muted:     #9490b5;
+            --glow-p:    rgba(140, 80, 255, 0.38);
+            --glow-r:    rgba(244,114,182,0.22);
+        }
+
+        *, *::before, *::after {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--ink);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ─── AMBIENT BACKGROUND ─────────────────────────── */
+        .ambient {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            overflow: hidden;
+        }
+        .ambient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.55;
+        }
+        .blob-1 {
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, #6c22e8 0%, transparent 70%);
+            top: -200px; left: -200px;
+            animation: drift1 18s ease-in-out infinite alternate;
+        }
+        .blob-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #d946a8 0%, transparent 70%);
+            bottom: -100px; right: -100px;
+            animation: drift2 22s ease-in-out infinite alternate;
+        }
+        .blob-3 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, #3b1fa8 0%, transparent 70%);
+            top: 50%; left: 55%;
+            animation: drift3 26s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift1 { to { transform: translate(60px, 80px); } }
+        @keyframes drift2 { to { transform: translate(-70px, -50px); } }
+        @keyframes drift3 { to { transform: translate(40px, -60px); } }
+
+        /* ─── NOISE TEXTURE OVERLAY ──────────────────────── */
+        body::after {
+            content: '';
+            position: fixed; inset: 0; z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; opacity: 0.5;
+        }
+
+        /* All content above the overlays */
+        nav, main, footer { position: relative; z-index: 2; }
+
+        /* ─── NAVIGATION ─────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 1.25rem 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(12, 11, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        .logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--white);
+        }
+        .logo em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--purple);
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            transition: color 0.25s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute; bottom: -3px; left: 0;
+            width: 0; height: 1px;
+            background: var(--purple);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* ─── HERO ───────────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            padding: 10rem 8% 6rem;
+            position: relative;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            width: 32px; height: 1px;
+            background: var(--purple);
+            display: block;
+        }
+
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -1px;
+            margin-bottom: 1.6rem;
+            max-width: 820px;
+        }
+
+        .hero h1 .name-accent {
+            display: block;
+            font-style: italic;
+            font-weight: 300;
+            background: linear-gradient(100deg, var(--purple) 0%, var(--rose) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animated role badge */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 0.55rem 1.1rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            width: fit-content;
+        }
+        .role-badge .dot {
+            width: 7px; height: 7px;
+            background: #4ade80;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #4ade80;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--muted);
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .contact-chip {
+            display: flex; align-items: center; gap: 0.55rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 0.55rem 1.1rem;
+            font-size: 0.85rem;
+            color: var(--white);
+            transition: border-color 0.25s, background 0.25s;
+        }
+        .contact-chip:hover {
+            border-color: var(--border-hi);
+            background: var(--glass-b);
+        }
+        .contact-chip .icon {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ─── SCROLL INDICATOR ───────────────────────────── */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem; left: 8%;
+            display: flex; align-items: center; gap: 0.6rem;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .scroll-line {
+            width: 40px; height: 1px;
+            background: linear-gradient(to right, var(--muted), transparent);
+            animation: extend 2s ease-in-out infinite;
+        }
+        @keyframes extend {
+            0%, 100% { width: 24px; opacity: 0.4; }
+            50% { width: 48px; opacity: 1; }
+        }
+
+        /* ─── SECTION SHARED ─────────────────────────────── */
+        main section {
+            padding: 7rem 8%;
+        }
+
+        .section-label {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .section-label span {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--purple);
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            max-width: 60px;
+            height: 1px;
+            background: var(--border-hi);
+        }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 3.5rem;
+            letter-spacing: -0.5px;
+        }
+        .section-title em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--purple);
+        }
+
+        /* ─── GLASS CARD ─────────────────────────────────── */
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+            transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .card:hover {
+            border-color: var(--border-hi);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(100, 40, 200, 0.12);
+        }
+
+        /* ─── EXPERIENCE ─────────────────────────────────── */
+        .timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .job-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+        .job-company {
+            font-size: 0.88rem;
+            color: var(--purple);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .job-badge {
+            display: flex; align-items: center; gap: 0.4rem;
+            background: rgba(181, 123, 255, 0.1);
+            border: 1px solid rgba(181, 123, 255, 0.25);
+            color: var(--purple);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.3rem 0.9rem;
+            border-radius: 100px;
+            white-space: nowrap;
+        }
+        .job-badge.current::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80;
+        }
+
+        .job-desc {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+        .job-desc li {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .job-desc li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0.65em;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--purple);
+            opacity: 0.7;
+        }
+
+        /* ─── SKILLS ─────────────────────────────────────── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.2px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: var(--muted);
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            transition: all 0.25s;
+            cursor: default;
+        }
+        .tag:hover {
+            background: rgba(181, 123, 255, 0.12);
+            border-color: rgba(181, 123, 255, 0.35);
+            color: var(--white);
+            transform: translateY(-1px);
+        }
+
+        /* ─── EDUCATION ──────────────────────────────────── */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .edu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--purple);
+            margin-bottom: 0.8rem;
+        }
+
+        .edu-card h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            line-height: 1.3;
+            margin-bottom: 0.4rem;
+        }
+
+        .edu-meta {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .edu-meta::before {
+            content: '';
+            width: 16px; height: 1px;
+            background: var(--border-hi);
+        }
+
+        .edu-desc {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* Honors highlight */
+        .honors-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(181,123,255,0.15), rgba(244,114,182,0.1));
+            border: 1px solid rgba(181,123,255,0.3);
+            color: var(--purple);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+        }
+
+        /* ─── DIVIDER ─────────────────────────────────────── */
+        .divider {
+            width: 100%; height: 1px;
+            background: linear-gradient(to right, transparent, var(--border), transparent);
+            margin: 0 8%;
+            width: 84%;
+        }
+
+        /* ─── FOOTER ─────────────────────────────────────── */
+        footer {
+            padding: 4rem 8% 3rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            text-align: center;
+        }
+
+        .footer-name {
+            font-family: 'Fraunces', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+        .footer-name em {
+            font-style: italic;
+            font-weight: 300;
+            color: var(--purple);
+        }
+        .footer-role {
+            font-size: 0.85rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+        .footer-copy {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.2);
+            margin-top: 0.5rem;
+        }
+
+        /* ─── REVEAL ANIMATION ───────────────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ─── MOBILE ──────────────────────────────────────── */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 5%; }
+            .nav-links { display: none; }
+            .hero { padding: 8rem 5% 5rem; }
+            main section { padding: 5rem 5%; }
+            footer { padding: 3rem 5%; }
+            .scroll-hint { left: 5%; }
+            .hero h1 { font-size: 2.8rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient background blobs -->
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+        <div class="ambient-blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Evaline <em>W. Mugo</em></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#education">Education</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ── HERO ────────────────────────────── -->
+        <section class="hero" id="about">
+
+            <div class="hero-eyebrow">Available for opportunities</div>
+
+            <h1>
+                Computer Science &amp;
+                <span class="name-accent">Evaline Wangui Mugo</span>
+            </h1>
+
+            <div class="role-badge">
+                <span class="dot"></span>
+                ICT Professional &amp; Virtual Assistant · Nairobi, Kenya
+            </div>
+
+            <p>
+                An all-rounded ICT professional with experience spanning technology support, network configuration, logistics document management, data entry, and digital design. Structured, driven, and built for rigorous remote environments.
+            </p>
+
+            <div class="contact-row">
+                <div class="contact-chip"><span class="icon">📍</span> Nairobi, Kenya</div>
+                <div class="contact-chip"><span class="icon">📞</span> +(254) 729 431 147</div>
+                <div class="contact-chip"><span class="icon">✉️</span> evahmugo690@gmail.com</div>
+            </div>
+
+            <div class="scroll-hint" aria-hidden="true">
+                <span class="scroll-line"></span>
+                Scroll to explore
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ── EXPERIENCE ──────────────────────── -->
+        <section id="experience">
+            <div class="section-label reveal"><span>Work</span></div>
+            <h2 class="section-title reveal">Professional <em>Experience</em></h2>
+
+            <div class="timeline">
+
+                <div class="card reveal">
+                    <div class="job-meta">
+                        <div>
+                            <div class="job-title">Document Flow Manager</div>
+                            <div class="job-company">Greenroot Resource Limited — KBL</div>
+                        </div>
+                        <span class="job-badge current">Aug 2025 — Present</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Supervise daily logistics frameworks, document flow operations, and departmental workflow cross-communications.</li>
+                        <li>Generate analytical movement data frameworks and operational tracking records inside Microsoft Excel environments.</li>
+                        <li>Audit, monitor, and document dynamic security and asset protection measures to eliminate processing challenges.</li>
+                    </ul>
+                </div>
+
+                <div class="card reveal reveal-delay-1">
+                    <div class="job-meta">
+                        <div>
+                            <div class="job-title">Graphic Designer — Design & Production</div>
+                            <div class="job-company">Jimmy Group Designs</div>
+                        </div>
+                        <span class="job-badge">Oct 2024 — Jul 2025</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Crafted client-focused brand identity blueprints, dynamic logos, posters, and flyers utilizing Adobe Illustrator.</li>
+                        <li>Constructed high-precision print-ready assets for large-format and heat press production pipelines.</li>
+                        <li>Collaborated across agile feedback structures to iterate visual systems toward target project objectives.</li>
+                    </ul>
+                </div>
+
+                <div class="card reveal reveal-delay-2">
+                    <div class="job-meta">
+                        <div>
+                            <div class="job-title">ICT Support Specialist</div>
+                            <div class="job-company">United States International University — Africa · Industrial Attachment</div>
+                        </div>
+                        <span class="job-badge">Jan 2022 — Apr 2022</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Resolved technical infrastructure anomalies via remote helpdesks using Windows Remote Assistance protocols.</li>
+                        <li>Executed core workstation controls: domain joins, network drive mappings, and proxy configurations.</li>
+                        <li>Provisioned enterprise software assets, license keys, printing profiles, and system hardware.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ── SKILLS ──────────────────────────── -->
+        <section id="skills">
+            <div class="section-label reveal"><span>Capabilities</span></div>
+            <h2 class="section-title reveal">Skills <em>Architecture</em></h2>
+
+            <div class="skills-grid">
+
+                <div class="card skill-card reveal">
+                    <h3>Administrative &amp; Virtual Assistance</h3>
+                    <div class="tags">
+                        <span class="tag">Email Management</span>
+                        <span class="tag">Calendar Management</span>
+                        <span class="tag">Data Entry &amp; Records</span>
+                        <span class="tag">Report Preparation</span>
+                        <span class="tag">Internet Research</span>
+                        <span class="tag">Document Flow Control</span>
+                        <span class="tag">Customer Interaction</span>
+                    </div>
+                </div>
+
+                <div class="card skill-card reveal reveal-delay-1">
+                    <h3>IT Infrastructure &amp; Networks</h3>
+                    <div class="tags">
+                        <span class="tag">Network Configuration</span>
+                        <span class="tag">IPv4 &amp; IPv6 Subnetting</span>
+                        <span class="tag">Static Routing</span>
+                        <span class="tag">Hardware Diagnostics</span>
+                        <span class="tag">Backup &amp; Recovery</span>
+                        <span class="tag">Remote Tech Support</span>
+                    </div>
+                </div>
+
+                <div class="card skill-card reveal reveal-delay-2">
+                    <h3>Software &amp; Design</h3>
+                    <div class="tags">
+                        <span class="tag">Microsoft Excel (Advanced)</span>
+                        <span class="tag">Google Workspace</span>
+                        <span class="tag">Adobe Illustrator</span>
+                        <span class="tag">Teams / Zoom</span>
+                        <span class="tag">Brand Identity Design</span>
+                        <span class="tag">Print Production</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ── EDUCATION ───────────────────────── -->
+        <section id="education">
+            <div class="section-label reveal"><span>Credentials</span></div>
+            <h2 class="section-title reveal">Education &amp; <em>Accreditations</em></h2>
+
+            <div class="edu-grid">
+
+                <div class="card edu-card reveal">
+                    <div class="edu-badge">🎓 Degree</div>
+                    <h3>Bachelor of Science in Computer Science</h3>
+                    <div class="edu-meta">St. Paul's University, Limuru Campus · 2018–2022</div>
+                    <div class="honors-chip">Upper Second Class Honours</div>
+                    <p class="edu-desc">Rigorous study of algorithmic design principles, software systems architecture, and analytical frameworks for complex computational problems.</p>
+                </div>
+
+                <div class="card edu-card reveal reveal-delay-1">
+                    <div class="edu-badge">🏅 Certification</div>
+                    <h3>CCNA 1 &amp; CCNA 2</h3>
+                    <div class="edu-meta">Cisco Networking Academy · Completed</div>
+                    <p class="edu-desc">Certified competencies across network architectures, internal routing and switching, VLAN infrastructures, and wireless operational fundamentals.</p>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ── FOOTER ──────────────────────────────── -->
+    <footer>
+        <div class="footer-name">Evaline <em>W. Mugo</em></div>
+        <p class="footer-role">Computer Science Graduate &amp; ICT Professional</p>
+        <p class="footer-copy">&copy; 2026 — Designed with intention.</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => io.observe(el));
+
+        // Nav background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.style.background = window.scrollY > 50
+                ? 'rgba(12,11,20,0.92)'
+                : 'rgba(12,11,20,0.6)';
+        });
+    </script>
+</body>
+</html>
